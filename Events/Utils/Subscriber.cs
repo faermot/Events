@@ -8,14 +8,28 @@ namespace Events.Utils
 {
     public class Subscriber : Publisher
     {
+        private string _name;
+
         public Subscriber(Publisher publisher)
         {
             publisher.Notify += OnNotify;
         }
 
+        public Subscriber(string name, Publisher publisher) 
+        {
+            _name = name;
+            publisher.Notify += OnNotify;
+        }
+
+        public void Unsubscribe(Publisher publisher)
+        {
+            publisher.Notify -= OnNotify;
+        }
+
         public void OnNotify(object sender, EventArgs e, string message)
         {
-            Console.WriteLine(message);
+            if (_name != null) Console.WriteLine($"{_name} : {message}");
+            else Console.WriteLine(message);
         }
     }
 }
